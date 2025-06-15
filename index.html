@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>INKHUT | Wear Your Vibe</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- 👕 INKHUT Splash Screen -->
+  <div class="splash-wrapper">
+    <div class="splash-inner">
+      <h1 class="logo-text">INKHUT</h1>
+      <p class="tagline">Wear Your Vibe</p>
+      <div class="custom-loader"></div>
+    </div>
+  </div>
+
+  <script>
+    setTimeout(() => {
+      window.location.href = "home page.html"; // Replace this with your actual homepage
+    }, 3000);
+  </script>
+<style>
+    body {
+  margin: 0;
+  padding: 0;
+  background-color: #000;
+  font-family: 'Poppins', sans-serif;
+}
+
+.splash-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #000000, #1f1f1f);
+  color: #fff;
+  overflow: hidden;
+}
+
+.splash-inner {
+  text-align: center;
+  animation: fadeIn 1.5s ease-in-out;
+}
+
+.logo-text {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 64px;
+  letter-spacing: 5px;
+  color: #00f7ff;
+  text-shadow: 0 0 10px #00f7ff, 0 0 30px #00f7ff55;
+  margin: 0;
+}
+
+.tagline {
+  margin-top: 10px;
+  font-size: 18px;
+  color: #ccc;
+  letter-spacing: 1px;
+}
+
+.custom-loader {
+  margin: 30px auto;
+  width: 50px;
+  height: 50px;
+  border: 5px solid #00f7ff;
+  border-top: 5px solid transparent;
+  border-radius: 50%;
+  animation: spin 1.2s linear infinite;
+  box-shadow: 0 0 10px #00f7ff88;
+}
+
+/* Animations */
+@keyframes spin {
+  0% { transform: rotate(0); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+</style>
+</body>
+</html>

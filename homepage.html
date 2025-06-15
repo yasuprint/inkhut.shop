@@ -1,0 +1,1129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title> inkhut</title>
+
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+  <style>
+    /* ===== RESET & BASE ===== */
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:"Segoe UI",Arial,sans-serif;background:#fafafa;color:#222}
+
+    a{color:inherit;text-decoration:none}
+
+    /* ===== NAVBAR CONTAINER ===== */
+    header.navbar{background:#fff;border-bottom:1px solid #ddd;position:sticky;top:0;z-index:1000}
+
+    /* ---------- TOP STRIP ---------- */
+    .nav-top{display:flex;align-items:center;justify-content:space-between;
+            padding:10px 20px;gap:12px;flex-wrap:wrap}
+
+    /* logo + hamburger (mobile) */
+    .logo{font-size:28px;font-weight:700;color:#811453}
+    .hamburger{display:none;flex-direction:column;gap:4px;border:0;background:transparent;cursor:pointer}
+    .hamburger span{width:20px;height:3px;background:#811453;border-radius:2px;transition:.3s}
+
+    /* hamburger animation */
+    .hamburger.active span:nth-child(1){transform:rotate(45deg) translate(4px,4px)}
+    .hamburger.active span:nth-child(2){opacity:0}
+    .hamburger.active span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
+
+    /* search box */
+    .search-bar{flex:1;max-width:520px;display:flex;align-items:center;
+               background:#f9f9f9;border:1px solid #ccc;border-radius:6px;padding:8px 12px}
+    .search-bar i{color:#777;margin-right:8px}
+    .search-bar input{border:none;outline:none;background:transparent;width:100%;font-size:15px}
+
+    /* right links */
+    .nav-right{display:flex;gap:18px;align-items:center;font-size:15px;flex-wrap:wrap}
+    .nav-right a{display:flex;align-items:center;gap:6px;color:#333;white-space:nowrap}
+
+    /* ---------- CATEGORY STRIP ---------- */
+    .nav-categories{display:flex;overflow-x:auto;gap:30px;padding:12px 20px;font-size:14px;
+                   scrollbar-width:none;border-top:1px solid #eee;white-space:nowrap}
+    .nav-categories::-webkit-scrollbar{display:none}
+    .cat-item{flex:0 0 auto;cursor:pointer;transition:color .25s}
+    .cat-item:hover{color:#811453}
+
+    /* -------- SIDE DRAWER (mobile) -------- */
+    .drawer-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.4);display:none;z-index:900}
+    .side-drawer{position:fixed;inset:0 0 0 -300px;width:280px;background:#fff;z-index:950;
+                transition:transform .4s ease;overflow-y:auto}
+    .side-drawer.open{transform:translateX(300px)}
+    .drawer-header{display:flex;justify-content:space-between;align-items:center;
+                  padding:14px 20px;border-bottom:1px solid #eee}
+    .drawer-links{display:flex;flex-direction:column;padding:20px}
+    .drawer-links a{padding:12px 6px;font-weight:600;border-bottom:1px solid #f3f3f3}
+
+    /* ---------- RESPONSIVE ---------- */
+    @media (max-width:768px){
+      .hamburger{display:flex}
+      .nav-right{gap:10px;font-size:14px}
+      .search-bar{order:3;width:100%;margin-top:8px}
+      .nav-categories{padding:10px 16px}
+    }
+    /* ======  HERO  ====== */
+.hero-wrap{
+  width:100%;max-width:1200px;margin:0 auto;padding:0 15px;
+}
+
+.hero-banner{
+  position:relative;
+  background:linear-gradient(90deg,#85176a 0%,#c22495 100%);
+  border-radius:12px;
+  overflow:hidden;
+}
+
+/* banner image */
+.hero-img{
+  width:55%;max-width:680px;
+  object-fit:cover;
+}
+
+/* text box */
+.hero-content{
+  position:absolute;top:50%;right:8%;transform:translateY(-50%);
+  color:#fff;text-align:right;max-width:380px;
+}
+
+.hero-content h1{
+  font-size:42px;font-weight:700;line-height:1.2;
+}
+.hero-content h1 span{font-weight:600}
+
+.hero-btn{
+  display:inline-block;margin-top:28px;padding:14px 36px;
+  border:2px solid #fff;border-radius:6px;font-size:20px;font-weight:600;
+  background:#fff;color:#c22495;transition:.25s;
+}
+.hero-btn:hover{background:transparent;color:#fff}
+
+/* =====  feature strip  ===== */
+.feature-strip{
+  display:flex;align-items:center;justify-content:space-between;
+  background:#fff;border:1px solid #e4b4e6;border-radius:8px;
+  padding:12px 18px;margin-top:18px;overflow-x:auto;
+}
+
+.feat{
+  display:flex;align-items:center;gap:8px;font-weight:600;font-size:15px;
+  white-space:nowrap;flex:0 0 auto;color:#2c2c2c;
+}
+.feat i{color:#c22495;font-size:18px}
+
+/* thin vertical line */
+.divider{
+  width:1px;height:22px;background:#d8d8d8;flex-shrink:0;margin:0 12px;
+}
+
+/* =====  responsiveness  ===== */
+@media(max-width:768px){
+  .hero-content{position:static;transform:none;text-align:center;padding:25px}
+  .hero-content h1{font-size:30px}
+  .hero-img{width:100%;display:block}
+  .hero-banner{display:flex;flex-direction:column-reverse;align-items:center}
+}
+
+@media(max-width:500px){
+  .hero-content h1{font-size:24px}
+  .hero-btn{font-size:16px;padding:10px 28px}
+  .feature-strip{flex-wrap:wrap;gap:10px}
+  .divider{display:none}
+}
+
+:root {
+  --primary-color: #c42494;
+  --text-dark: #222;
+  --text-light: #777;
+  --bg-light: #f9f9f9;
+  --border-color: #ddd;
+  --hover-color: #a61c79;
+  --font-main: "Segoe UI", Arial, sans-serif;
+}
+
+body {
+  font-family: var(--font-main);
+  background: #fafafa;
+  color: var(--text-dark);
+}
+
+/* ===== NAVBAR ===== */
+header.navbar {
+  background: #fff;
+  border-bottom: 1px solid var(--border-color);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+}
+
+.logo {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--primary-color);
+}
+
+/* Hamburger */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 4px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+.hamburger span {
+  width: 20px;
+  height: 3px;
+  background: var(--primary-color);
+  border-radius: 2px;
+  transition: 0.3s;
+}
+.hamburger.active span:nth-child(1) {
+  transform: rotate(45deg) translate(4px, 4px);
+}
+.hamburger.active span:nth-child(2) {
+  opacity: 0;
+}
+.hamburger.active span:nth-child(3) {
+  transform: rotate(-45deg) translate(5px, -5px);
+}
+
+.search-bar {
+  flex: 1;
+  max-width: 520px;
+  display: flex;
+  align-items: center;
+  background: var(--bg-light);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 8px 12px;
+}
+.search-bar i {
+  color: var(--text-light);
+  margin-right: 8px;
+}
+.search-bar input {
+  border: none;
+  outline: none;
+  background: transparent;
+  width: 100%;
+  font-size: 15px;
+}
+
+.nav-right a {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #333;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+.nav-right a:hover {
+  color: var(--primary-color);
+}
+
+/* ===== CATEGORIES ===== */
+.nav-categories {
+  display: flex;
+  overflow-x: auto;
+  gap: 30px;
+  padding: 12px 20px;
+  font-size: 14px;
+  scrollbar-width: none;
+  border-top: 1px solid #eee;
+  background: #fff;
+}
+.nav-categories::-webkit-scrollbar {
+  display: none;
+}
+.cat-item {
+  cursor: pointer;
+  transition: all 0.25s;
+  padding-bottom: 4px;
+  border-bottom: 2px solid transparent;
+}
+.cat-item:hover {
+  color: var(--primary-color);
+  border-bottom: 2px solid var(--primary-color);
+}
+
+/* ===== HERO SECTION ===== */
+.hero-banner {
+  position: relative;
+  background: linear-gradient(90deg, #85176a, #c22495);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.hero-img {
+  width: 55%;
+  max-width: 680px;
+  object-fit: cover;
+}
+.hero-content {
+  position: absolute;
+  top: 50%;
+  right: 8%;
+  transform: translateY(-50%);
+  color: #fff;
+  text-align: right;
+  max-width: 380px;
+}
+.hero-content h1 {
+  font-size: 42px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+.hero-content h1 span {
+  font-weight: 600;
+}
+.hero-btn {
+  margin-top: 28px;
+  padding: 14px 36px;
+  border: 2px solid #fff;
+  border-radius: 6px;
+  font-size: 20px;
+  font-weight: 600;
+  background: #fff;
+  color: var(--primary-color);
+  transition: 0.25s ease;
+}
+.hero-btn:hover {
+  background: transparent;
+  color: #fff;
+}
+
+/* ===== FEATURE STRIP ===== */
+.feature-strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  border: 1px solid #e4b4e6;
+  border-radius: 8px;
+  padding: 12px 18px;
+  margin-top: 18px;
+  overflow-x: auto;
+}
+.feat {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  font-size: 15px;
+  white-space: nowrap;
+  flex: 0 0 auto;
+  color: #2c2c2c;
+}
+.feat i {
+  color: var(--primary-color);
+  font-size: 18px;
+}
+.divider {
+  width: 1px;
+  height: 22px;
+  background: #d8d8d8;
+  flex-shrink: 0;
+  margin: 0 12px;
+}
+
+/* ===== DRAWER ===== */
+.side-drawer {
+  position: fixed;
+  inset: 0 0 0 -300px;
+  width: 280px;
+  background: #fff;
+  z-index: 950;
+  transition: transform 0.4s ease;
+  overflow-y: auto;
+}
+.side-drawer.open {
+  transform: translateX(300px);
+}
+.drawer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 20px;
+  border-bottom: 1px solid #eee;
+}
+.drawer-links a {
+  padding: 12px 6px;
+  font-weight: 600;
+  border-bottom: 1px solid #f3f3f3;
+  transition: 0.2s;
+}
+.drawer-links a:hover {
+  background: #f7f7f7;
+  color: var(--primary-color);
+}
+
+/* ===== MEDIA ===== */
+@media (max-width: 768px) {
+  .hamburger {
+    display: flex;
+  }
+  .nav-right {
+    gap: 10px;
+    font-size: 14px;
+  }
+  .search-bar {
+    order: 3;
+    width: 100%;
+    margin-top: 8px;
+  }
+  .hero-content {
+    position: static;
+    transform: none;
+    text-align: center;
+    padding: 25px;
+  }
+  .hero-banner {
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+  }
+  .hero-content h1 {
+    font-size: 30px;
+  }
+  .hero-img {
+    width: 100%;
+    display: block;
+  }
+}
+@media (max-width: 500px) {
+  .hero-content h1 {
+    font-size: 24px;
+  }
+  .hero-btn {
+    font-size: 16px;
+    padding: 10px 28px;
+  }
+  .feature-strip {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .divider {
+    display: none;
+  }
+}
+.category-strip {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  padding: 20px;
+  scroll-snap-type: x mandatory;
+  background-color: #fff0f7;
+}
+.category-strip::-webkit-scrollbar {
+  display: none;
+}
+.category-item {
+  min-width: 90px;
+  flex: 0 0 auto;
+  text-align: center;
+  scroll-snap-align: start;
+}
+.category-item img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  padding: 10px;
+  background-color: #fce6f2;
+  object-fit: contain;
+}
+.category-item p {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  margin-top: 6px;
+}
+.gold-banner {
+  display: flex;
+  flex-wrap: wrap;
+  background: linear-gradient(to bottom, #42210b, #6e3e1f);
+  color: #fff3d9;
+  padding: 30px;
+  border-radius: 20px;
+  gap: 20px;
+}
+
+.gold-left {
+  flex: 1 1 300px;
+  position: relative;
+}
+.gold-left img {
+  width: 100%;
+  border-radius: 15px;
+}
+.gold-text {
+  position: absolute;
+  bottom: 30px;
+  left: 30px;
+}
+.gold-text h1 {
+  font-size: 48px;
+  font-weight: bold;
+  color: #f4d07d;
+}
+.gold-icon {
+  color: #ffde8d;
+  font-size: 36px;
+}
+.gold-text p {
+  font-size: 18px;
+  margin: 10px 0;
+}
+.gold-text button {
+  background-color: transparent;
+  border: 1px solid #ffde8d;
+  padding: 10px 20px;
+  color: #fff3d9;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.gold-categories {
+  flex: 1 1 300px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  align-items: center;
+}
+.gold-box {
+  text-align: center;
+  background-color: rgba(255, 255, 255, 0.08);
+  border: 1px solid #e6b977;
+  border-radius: 20px;
+  padding: 10px;
+}
+.gold-box img {
+  width: 100px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+.gold-box p {
+  margin-top: 10px;
+  font-weight: 500;
+  font-size: 16px;
+  color: #fcd48a;
+}
+
+/* Responsive */
+@media(max-width: 768px) {
+  .gold-banner {
+    flex-direction: column;
+    padding: 20px;
+  }
+  .gold-text h1 {
+    font-size: 36px;
+  }
+  .gold-categories {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 25px;
+  padding: 20px;
+  background: #fbe9dd;
+}
+
+.product-card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 10px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  transition: transform 0.3s ease;
+}
+
+.product-card:hover {
+  transform: scale(1.03);
+}
+
+.product-card img {
+  width: 100%;
+  height: auto;
+  max-height: 250px;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+.product-card .title {
+  margin-top: 10px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+}
+
+.product-card .price {
+  margin-top: 5px;
+  font-size: 16px;
+  color: red;
+  font-weight: bold;
+}
+
+.product-card .old {
+  text-decoration: line-through;
+  color: #999;
+  margin-right: 8px;
+  font-weight: normal;
+}
+
+/* Mobile tweak */
+@media(max-width: 600px) {
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .product-card img {
+    max-height: 180px;
+  }
+  .product-card .title {
+    font-size: 14px;
+  }
+  .product-card .price {
+    font-size: 14px;
+  }
+}
+.section-title {
+  text-align: center;
+  font-size: 28px;
+  font-weight: bold;
+  margin-top: 40px;
+  margin-bottom: 20px;
+  color: #1a237e;
+  background-color: #e3f2fd;
+  display: inline-block;
+  padding: 5px 15px;
+  border-radius: 5px;
+}
+
+.hoodie-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 30px;
+  padding: 20px;
+}
+
+.hoodie-card {
+  text-align: center;
+}
+
+.hoodie-card img {
+  width: 100%;
+  height: auto;
+  max-height: 280px;
+  object-fit: contain;
+}
+
+.hoodie-card h3 {
+  font-size: 16px;
+  margin: 10px 0 5px;
+  color: #222;
+}
+
+.hoodie-card p {
+  font-size: 15px;
+  color: #444;
+}
+
+.hoodie-card span {
+  color: #555;
+  font-size: 14px;
+}
+.hero {
+  text-align: center;
+  padding: 60px 20px 20px;
+  background-color: #fff;
+}
+
+.brand-name {
+  font-size: 100px;
+  font-weight: bold;
+  background: linear-gradient(to bottom, #f9c72a, #fff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.about {
+  text-align: center;
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+.about h2 {
+  font-size: 28px;
+  font-weight: bold;
+  color: #111;
+  margin-bottom: 20px;
+}
+
+.about p {
+  font-size: 17px;
+  color: #333;
+  line-height: 1.6;
+}
+.features {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 40px 20px;
+  background-color: #fff;
+  gap: 20px;
+  text-align: center;
+}
+
+.feature-box {
+  flex: 1 1 220px;
+  max-width: 250px;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.05);
+  transition: transform 0.3s ease;
+  border-radius: 10px;
+}
+
+.feature-box:hover {
+  transform: translateY(-5px);
+}
+
+.feature-box i {
+  font-size: 30px; /* slightly smaller for mobile look */
+  color: #111;
+  margin-bottom: 12px;
+}
+
+.feature-box h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #111;
+}
+
+.feature-box p {
+  font-size: 13px;
+  color: #555;
+}
+
+/* ✅ 2 Cards side-by-side on Mobile */
+@media (max-width: 768px) {
+  .feature-box {
+    flex: 0 1 calc(50% - 20px);
+  }
+}
+
+/* ✅ 1 Card per row on very small screens */
+@media (max-width: 480px) {
+  .feature-box {
+    flex: 0 1 100%;
+  }
+}
+/* Footer CSS */
+.footer {
+  background-color: #111;
+  color: #eee;
+  padding: 40px 20px;
+  font-family: 'Segoe UI', sans-serif;
+}
+.footer-container {
+  max-width: 1200px;
+  margin: auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+.footer-section {
+  flex: 1 1 220px;
+  margin: 20px 0;
+}
+.footer-section h2, .footer-section h3 {
+  color: #00f7ff;
+}
+.footer-section ul {
+  list-style: none;
+  padding: 0;
+}
+.footer-section ul li a {
+  color: #ccc;
+  text-decoration: none;
+  display: block;
+  margin: 5px 0;
+}
+.footer-section ul li a:hover {
+  color: #fff;
+}
+.social-icons a {
+  margin-right: 15px;
+  font-size: 20px;
+  color: #00f7ff;
+  text-decoration: none;
+}
+.social-icons a:hover {
+  color: #fff;
+}
+hr {
+  border-color: #444;
+  margin-top: 20px;
+}
+.footer p {
+  text-align: center;
+  color: #777;
+  margin-top: 10px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .footer-container {
+    flex-direction: column;
+    align-items: center;
+  }
+  .footer-section {
+    text-align: center;
+  }
+}
+
+
+  </style>
+</head>
+<body>
+
+<header class="navbar">
+  <!-- === TOP STRIP === -->
+  <div class="nav-top">
+    <div style="display:flex;align-items:center;gap:12px">
+      <button class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+      <span class="logo">inkhut</span>
+    </div>
+
+    <!-- search box -->
+    <div class="search-bar">
+      <i class="fas fa-search"></i>
+      <input type="text" placeholder="Try Saree, Kurti or Search by Product Code">
+    </div>
+
+    <!-- right links -->
+    <div class="nav-right">
+      <a href="#">Become a Supplier</a>
+      <a href="#">Investor Relations</a>
+      <a href="#"><i class="fas fa-user"></i> Profile</a>
+      <a href="#"><i class="fas fa-shopping-cart"></i> Cart</a>
+    </div>
+  </div>
+
+  <!-- === CATEGORY STRIP === -->
+  <div class="nav-categories" id="catRow">
+    <div class="cat-item">Women Ethnic</div>
+    <div class="cat-item">Women Western</div>
+    <div class="cat-item">Men</div>
+    <div class="cat-item">Kids</div>
+    <div class="cat-item">Home & Kitchen</div>
+    <div class="cat-item">Beauty & Health</div>
+    <div class="cat-item">Jewellery & Accessories</div>
+    <div class="cat-item">Bags & Footwear</div>
+    <div class="cat-item">Electronics</div>
+    <div class="cat-item">Sports & Fitness</div>
+    <div class="cat-item">Car & Motorbike</div>
+    <div class="cat-item">Office</div>
+  </div>
+</header>
+
+<!-- ===== MOBILE SIDE DRAWER ===== -->
+<div class="drawer-backdrop" id="backdrop"></div>
+
+<aside class="side-drawer" id="drawer">
+  <div class="drawer-header">
+    <span class="logo">meesho</span>
+    <button id="closeDrawer" style="font-size:26px;border:0;background:none;cursor:pointer">&times;</button>
+  </div>
+  <nav class="drawer-links">
+    <a href="#">Home</a>
+    <a href="#">About</a>
+    <a href="#">Contact</a>
+    <a href="#">Become a Supplier</a>
+    <a href="#">Investor Relations</a>
+    <a href="#">Profile</a>
+    <a href="#">Cart</a>
+  </nav>
+</aside>
+
+
+
+<!-- ===== HERO BANNER + FEATURES  ===== -->
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+<section class="hero-wrap">
+  <!-- main banner -->
+  <div class="hero-banner">
+    <img class="hero-img"
+         src="https://images.meesho.com/images/marketing/1744698265981.webp"
+         alt="Smart shopping couple" />
+
+    <div class="hero-content">
+      <h1>Smart Shopping<br><span>Trusted by Millions</span></h1>
+      <a href="#" class="hero-btn">Shop Now</a>
+    </div>
+  </div>
+
+  <!-- feature strip -->
+  <div class="feature-strip">
+    <div class="feat">
+      <i class="fas fa-undo-alt"></i>
+      <span>7 Days Easy Return</span>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="feat">
+      <i class="fas fa-hand-holding-usd"></i>
+      <span>Cash on Delivery</span>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="feat">
+      <i class="fas fa-tags"></i>
+      <span>Lowest Prices</span>
+    </div>
+  </div>
+</section>
+<div class="category-strip">
+  <div class="category-item">
+    <img src="https://images.meesho.com/images/products/505528003/z6dye_512.webp" alt="Ethnic Wear" />
+    <p>Ethnic Wear</p>
+  </div>
+  <div class="category-item">
+    <img src="https://images.meesho.com/images/marketing/1744634725496.webp" alt="Western Dresses" />
+    <p>Western Dresses</p>
+  </div>
+  <div class="category-item">
+   <a href="D:\my use gd web\inkhut 2 save\all new tshirt.html"><img src="https://images.meesho.com/images/marketing/1744634780426.webp" alt="Menswear" /></a> 
+    <p>Menswear</p>
+  </div>
+  <div class="category-item">
+    <img src="https://www.dudeme.in/cdn/shop/files/div.relative-1.png?v=1712124541&width=400" alt="Footwear" />
+    <p> Hoodie</p>
+  </div>
+  <div class="category-item">
+    <img src="https://www.dudeme.in/cdn/shop/files/div.relative_5.png?v=1711523046&width=400" alt="Home Decor" />
+    <p> Polo T-Shirt</p>
+  </div>
+  <div class="category-item">
+    <img src="https://images.meesho.com/images/marketing/1744634871107.webp" alt="Beauty" />
+    <p>Beauty</p>
+  </div>
+  <div class="category-item">
+    <img src="https://www.dudeme.in/cdn/shop/files/div.relative_9.png?v=1711523852&width=400" alt="Accessories" />
+    <p>Kids </p>
+  </div>
+  <div class="category-item">
+    <img src="https://images.meesho.com/images/marketing/1744634937295.webp" alt="Grocery" />
+    <p>Grocery</p>
+  </div>
+</div>
+<div class="gold-banner">
+  <div class="gold-left">
+    <img src="https://images.meesho.com/images/marketing/1744698265981.webp" alt="Gold Couple" />
+    <div class="gold-text">
+      <h1><span class="gold-icon">✦</span> Gold</h1>
+      <p>Products you Love. Quality we Trust.</p>
+      <button>Shop Now</button>
+    </div>
+  </div>
+
+  <div class="gold-categories">
+    <div class="gold-box">
+      <img src="https://images.meesho.com/images/marketing/1744722796811.webp" alt="Lehengas" />
+      <p>Lehengas</p>
+    </div>
+    <div class="gold-box">
+      <img src="https://images.meesho.com/images/marketing/1744635113661.webp" alt="Menwear" />
+      <p>Menwear</p>
+    </div>
+    <div class="gold-box">
+      <img src="https://images.meesho.com/images/marketing/1744635139351.webp" alt="Sarees" />
+      <p>Sarees</p>
+    </div>
+    <div class="gold-box">
+      <img src="https://images.meesho.com/images/marketing/1744635189897.webp" alt="Jewellery" />
+      <p>Jewellery</p>
+    </div>
+  </div>
+</div>
+<center>
+<h1>
+progarming t-shirts
+</h1></center>
+<div class="product-grid">
+  <div class="product-card">
+    <a href="tp2.html"><img src="https://www.dudeme.in/cdn/shop/products/Declare-variables-NAVY.jpg?v=1661775148&width=400" alt="T-shirt"></a>
+    <p class="title">Declare Variables not War Half Sleeve</p>
+    <p class="price"><span class="old">₹1,199.00</span> ₹599.00</p>
+  </div>
+
+  <div class="product-card">
+   <a href="tp3.html"> <img src="https://www.dudeme.in/cdn/shop/products/1st-Rule-NAVY.jpg?v=1661942569&width=400" alt="T-shirt"></a>
+    <p class="title">If It Works Don't Touch Half Sleeve</p>
+    <p class="price"><span class="old">₹1,199.00</span> ₹699.00</p>
+  </div>
+
+  <div class="product-card">
+     <a href="tp4.html"><img src="https://www.dudeme.in/cdn/shop/products/Programmer-life-NAVY.jpg?v=1661840058&width=400" alt="T-shirt"></a>
+    <p class="title">No Hugs Only Bugs & Fixes</p>
+    <p class="price"><span class="old">₹1,199.00</span> ₹599.00</p>
+  </div>
+
+  <div class="product-card">
+    <img src="https://www.dudeme.in/cdn/shop/products/Programmer-life-NAVY.jpg?v=1661840058&width=400" alt="T-shirt">
+    <p class="title">While Alive Eat Sleep Code</p>
+    <p class="price"><span class="old">₹1,199.00</span> ₹599.00</p>
+  </div>
+</div>
+
+<center>
+<h1>
+Hoodies & Jackets
+</h1></center>
+<div class="product-grid">
+  <div class="product-card">
+    <img src="https://printo-s3.dietpixels.net/Highneck_1705900240_1748694177.jpg?quality=70&format=webp&w=640" alt="T-shirt">
+    <p class="title">High Neck Jackets</p>
+    <p class="price"><span class="old">₹1799</span> ₹1,699.44</p>
+  </div>
+
+  <div class="product-card">
+    <img src="https://printo-s3.dietpixels.net/Non-zipper_1705900240_1748694216.jpg?quality=70&format=webp&w=640" alt="T-shirt">
+    <p class="title">Custom Printed Pullover Hoodies
+
+</p>
+    <p class="price"><span class="old">₹1,499</span> ₹1399</p>
+  </div>
+
+  <div class="product-card">
+    <img src="https://printo-s3.dietpixels.net/site/20240108_175457261075_11a643_zipper-hoodie.jpg?quality=70&format=webp&w=640" alt="T-shirt">
+    <p class="title">Custom Zipper Hoodies</p>
+    <p class="price"><span class="old">₹1299</span> ₹1035</p>
+  </div>
+
+  <div class="product-card">
+    <img src="https://printo-s3.dietpixels.net/site/20231117_231651346656_425950_Hoodies.jpg?quality=70&format=webp&w=640" alt="T-shirt">
+    <p class="title">Embroidered Pullover Hoodies</p>
+    <p class="price"><span class="old">₹1,199.00</span> ₹999.00</p>
+  </div>
+</div>
+
+<section class="hero">
+  <h1 class="brand-name">inkhut</h1>
+</section>
+
+<section class="about">
+  <h2>About inkhut</h2>
+  <p>
+    At inkhut, we believe fashion is more than what you wear. It’s how you feel, how you express yourself.
+    We’re an online platform dedicated to creating T-shirts that blend personality, comfort, and statement-making style.
+  </p>
+</section>
+<section class="features">
+  <div class="feature-box">
+    <i class="fas fa-box"></i>
+    <h3>PAN India shipping</h3>
+    <p>We offer shipping all over India.</p>
+  </div>
+  <div class="feature-box">
+    <i class="fas fa-headset"></i>
+    <h3>Customer service</h3>
+    <p>Great Customer Service</p>
+  </div>
+  <div class="feature-box">
+    <i class="fas fa-tag"></i>
+    <h3>Great Deals</h3>
+    <p>Get great offers and discounts on all our products.</p>
+  </div>
+  <div class="feature-box">
+    <i class="fas fa-lock"></i>
+    <h3>Secure payment</h3>
+    <p>Your payment is fully secure with us</p>
+  </div>
+</section>
+
+<script>
+/* === Hamburger & Drawer === */
+const ham = document.getElementById('hamburger');
+const drawer = document.getElementById('drawer');
+const backdrop = document.getElementById('backdrop');
+const closeBtn = document.getElementById('closeDrawer');
+
+function openDrawer(){
+  drawer.classList.add('open');
+  backdrop.style.display='block';
+  ham.classList.add('active');
+}
+function closeDrawer(){
+  drawer.classList.remove('open');
+  backdrop.style.display='none';
+  ham.classList.remove('active');
+}
+
+ham.addEventListener('click', () => drawer.classList.contains('open') ? closeDrawer() : openDrawer());
+closeBtn.addEventListener('click', closeDrawer);
+backdrop.addEventListener('click', closeDrawer);
+
+/* === Simple keyboard accessibility for hamburger === */
+ham.addEventListener('keydown',e=>{
+  if(e.key==='Enter'||e.key===' ') { e.preventDefault(); ham.click();}
+});
+</script>
+<footer class="footer">
+  <div class="footer-container">
+    <!-- Brand Info -->
+    <div class="footer-section">
+      <h2>INKHUT</h2>
+      <p>Wear your vibe 🧢👕</p>
+    </div>
+
+    <!-- Quick Links -->
+    <div class="footer-section">
+      <h3>Quick Links</h3>
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Shop</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+
+    <!-- Contact Info -->
+    <div class="footer-section">
+      <h3>Contact</h3>
+      <p>📞 +91-9876543210</p>
+      <p>📧 support@inkhut.in</p>
+      <p>📍 Indore, MP</p>
+    </div>
+
+    <!-- Social Media -->
+    <div class="footer-section">
+      <h3>Follow Us</h3>
+      <div class="social-icons">
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-facebook-f"></i></a>
+        <a href="#"><i class="fab fa-youtube"></i></a>
+      </div>
+    </div>
+  </div>
+  <hr>
+  <p class="copyright">© 2025 INKHUT Clothing | All Rights Reserved</p>
+</footer>
+
+</body>
+</html>
